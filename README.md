@@ -122,18 +122,6 @@ http://localhost/Triad-Coffee-Roaster/
 
 ---
 
-## 📷 Screenshots
-
-*(Add screenshots here to showcase your dashboard and POS interface)*
-
-Example:
-
-```
-![Dashboard Screenshot](screenshots/dashboard.png)
-```
-
----
-
 ## 👨‍💻 Developer
 
 **Jyrrel James N. Estrada**  
