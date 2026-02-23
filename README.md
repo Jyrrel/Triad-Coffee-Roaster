@@ -1,83 +1,109 @@
-# ☕ Triad Coffee Roaster POS System
+# ☕ Triad Coffee Roaster  
+### Web-Based POS & Inventory Management System
 
-A web-based Point of Sale (POS) and Inventory Management System designed for Triad Coffee Roaster.  
-This system helps manage orders, products, sales, and inventory efficiently.
-
----
-
-## 📌 Project Overview
-
-Triad Coffee Roaster POS is built to simplify coffee shop operations.  
-It allows staff and managers to process orders, manage products, monitor stock levels, and track sales in an organized system.
-
-This project is ideal for small to medium coffee businesses.
+> A modern Point-of-Sale and Inventory Management System designed for coffee shop operations.  
+> Built with usability, clarity, and efficiency in mind.
 
 ---
 
-## ✨ Features
+## 📌 Overview
 
-### 🛒 Sales & POS
-- Add items to cart
-- Automatic total calculation
-- Order processing
-- Receipt-style summary
+**Triad Coffee Roaster** is a web-based POS system developed to streamline coffee shop operations.  
+It allows staff to process orders efficiently while enabling managers to monitor inventory and sales performance.
 
-### 📦 Inventory Management
-- Add new products
-- Update product details
+This project demonstrates practical implementation of:
+- Human-Computer Interaction (HCI) principles
+- Structured dashboard design
+- Backend & database integration
+- Real-world business workflow logic
+
+---
+
+## 🎯 Project Objectives
+
+- Improve order processing speed
+- Provide clean and intuitive UI
+- Track inventory levels in real time
+- Support staff and manager workflows
+- Reduce stock management errors
+
+---
+
+## ✨ Key Features
+
+### 🛒 POS Module
+- Add-to-cart functionality
+- Real-time total calculation
+- Order summary display
+- Clean checkout interface
+
+### 📦 Inventory Module
+- Add / Edit / Delete products
 - Monitor stock levels
-- Low stock monitoring
+- Low-stock alerts
+- Organized product listing
 
-### 👨‍💼 Staff & Manager Dashboard
-- User-friendly dashboard
-- Easy navigation sidebar
-- Organized layout (HCI-based design)
+### 📊 Dashboard
 - Sales overview
+- Inventory monitoring
+- Structured sidebar navigation
+- Role-based interface (Staff & Manager)
 
 ---
 
-## 🛠️ Built With
+## 🛠️ Tech Stack
 
-- **PHP** – Backend logic
-- **MySQL** – Database
-- **HTML5** – Structure
-- **CSS3** – Styling
-- **JavaScript** – Interactive features
+| Technology | Purpose |
+|------------|----------|
+| PHP | Backend Logic |
+| MySQL | Database Management |
+| HTML5 | Structure |
+| CSS3 | Styling & Layout |
+| JavaScript | Interactive Features |
+
+---
+
+## 🧠 Design Approach
+
+This system applies HCI principles:
+
+- ✔ Clear visual hierarchy  
+- ✔ Consistent navigation  
+- ✔ Reduced cognitive load  
+- ✔ Organized layout using grid system  
+- ✔ Minimal and functional design  
 
 ---
 
 ## 🚀 Installation Guide
 
-Follow these steps to run the system locally:
-
-### 1️⃣ Requirements
+### 🔧 Requirements
 - XAMPP / WAMP / MAMP
 - PHP 8+
 - MySQL
+- Modern browser
 
-### 2️⃣ Clone the Repository
+### 📥 Clone Repository
 
 ```bash
 git clone https://github.com/Jyrrel/Triad-Coffee-Roaster.git
 ```
 
-### 3️⃣ Move to Server Folder
+### 📂 Move Project
 
-Move the project folder to:
+Place the folder inside:
 
 ```
 xampp/htdocs/
 ```
 
-### 4️⃣ Setup Database
+### 🗄️ Setup Database
 
-1. Open **phpMyAdmin**
-2. Create a new database (example: `triad_db`)
-3. Import the provided `.sql` file (if available)
+1. Open phpMyAdmin  
+2. Create database: `triad_db`  
+3. Import SQL file (if included)
 
-### 5️⃣ Run the Project
-
-Open your browser and go to:
+### ▶ Run the System
 
 ```
 http://localhost/Triad-Coffee-Roaster/
@@ -85,38 +111,42 @@ http://localhost/Triad-Coffee-Roaster/
 
 ---
 
-## 📊 System Modules
+## 📈 Future Enhancements
 
-- POS System
-- Inventory Management
-- Low Stock Monitoring
-- Product Management
-- Staff Dashboard
-- Manager Dashboard
+- Sales analytics dashboard
+- Receipt printing feature
+- User authentication system
+- Role-based access control
+- Export reports (PDF / Excel)
+- Cloud deployment
 
 ---
 
-## 🎯 Future Improvements
+## 📷 Screenshots
 
-- Sales Reports (Daily / Monthly)
-- User Authentication System
-- Role-based Access Control
-- Receipt Printing
-- Analytics Dashboard
+*(Add screenshots here to showcase your dashboard and POS interface)*
+
+Example:
+
+```
+![Dashboard Screenshot](screenshots/dashboard.png)
+```
 
 ---
 
 ## 👨‍💻 Developer
 
 **Jyrrel James N. Estrada**  
-BSIT Student  
+Bachelor of Science in Information Technology  
+
+Passionate about building practical systems that solve real-world business problems.
 
 ---
 
 ## 📄 License
 
-This project is for educational purposes.
+This project is created for academic and portfolio purposes.
 
 ---
 
-⭐ If you find this project helpful, feel free to give it a star!
+⭐ If you like this project, consider giving it a star!
