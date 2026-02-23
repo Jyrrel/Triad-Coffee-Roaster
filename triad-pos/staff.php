@@ -1,0 +1,555 @@
+<?php
+require __DIR__ . '/server/auth.php';
+require_login();
+require_role('staff');
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Triad Coffee Roasters Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- If your css is in same folder use styles.css
+       If inside css folder use css/styles.css -->
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+
+<body>
+<!-- AUTH TOPBAR -->
+<div id="authTopbar" style="position:fixed; right:16px; top:16px; z-index:9999; display:flex; gap:10px; align-items:center;">
+  <span id="authUserChip" style="background:#111827; color:#fff; padding:8px 12px; border-radius:999px; font-weight:700; font-size:12px; box-shadow:0 6px 18px rgba(0,0,0,.18);"></span>
+  <a href="logout.php" style="background:#fff; color:#111827; padding:8px 12px; border-radius:999px; font-weight:800; font-size:12px; text-decoration:none; border:1px solid #e5e7eb; box-shadow:0 6px 18px rgba(0,0,0,.10);">Logout</a>
+</div>
+<script>
+  fetch('api/me.php').then(r=>r.json()).then(d=>{
+    if(d && d.ok){
+      document.getElementById('authUserChip').textContent = d.user.name + ' • ' + d.user.role.toUpperCase();
+    }
+  }).catch(()=>{});
+</script>
+
+  <div class="shell">
+    <div class="app" data-app="pos">
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar" aria-label="Sidebar Navigation">
+        <div class="brand">
+          <div class="brand-badge brand-logo" aria-hidden="true">
+            <img src="triad-logo.jpg"  alt="Triad Coffee Roasters logo featuring stylized coffee cup design in brown and cream tones">
+          </div>
+          <div>
+            <div class="brand-name">Triad Coffee Roasters</div>
+            <div class="brand-sub">Staff Panel</div>
+          </div>
+        </div>
+
+        <nav class="nav" aria-label="Main menu">
+          <a class="nav-item" href="#" data-nav="dashboard">
+            <span class="nav-icon" aria-hidden="true">🏠</span> Dashboard
+          </a>
+          <a class="nav-item active" href="#" data-nav="menu">
+            <span class="nav-icon" aria-hidden="true">📋</span> Menu
+          </a>
+          <a class="nav-item" href="#" data-nav="orders">
+            <span class="nav-icon" aria-hidden="true">🧾</span> Orders
+          </a>
+          <a class="nav-item" href="#" data-nav="settings">
+            <span class="nav-icon" aria-hidden="true">⚙️</span> Setting
+          </a>
+        </nav>
+
+
+      </aside>
+
+      <!-- MAIN -->
+      <main class="main" aria-label="Main Content">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+          <h1 class="page-title">Dashboard</h1>
+
+          <form class="search" role="search" data-search="menu">
+            <span class="search-icon" aria-hidden="true">🔍</span>
+            <input type="search" placeholder="Search coffee, drinks, pastries..." name="q" autocomplete="off" data-search-input />
+          </form>
+
+          <div class="topbar-right">
+            <button class="icon-btn" type="button" aria-label="Notifications" data-action="notifications">
+              🔔
+            </button>
+
+            <button class="user" type="button" data-action="user-menu" aria-label="User menu">
+              <span class="avatar" aria-hidden="true">TC</span>
+              <span class="user-meta">
+                <span class="user-name">Triad Staff</span>
+                <span class="user-role">Staff</span>
+              </span>
+              <span class="chev" aria-hidden="true">▾</span>
+            </button>
+          </div>
+        </header>
+
+        <div class="content">
+          <!-- LEFT -->
+          <section class="left">
+
+            <!-- HERO / BANNER -->
+           <section class="hero-slider" aria-label="Promotion banner">
+
+  <div class="slide active">
+    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1400&q=60" alt="Caramel Latte">
+    <div class="slide-content">
+      <h2>Best Seller: Caramel Latte</h2>
+      <p>Our most loved creamy caramel coffee.</p>
+      <button class="btn btn-primary">Order Now</button>
+    </div>
+  </div>
+
+  <div class="slide">
+    <img src="https://images.unsplash.com/photo-1521305916504-4a1121188589?auto=format&fit=crop&w=1400&q=60" alt="Iced Americano">
+    <div class="slide-content">
+      <h2>Best Seller: Iced Americano</h2>
+      <p>Strong, smooth and refreshing.</p>
+      <button class="btn btn-primary">Order Now</button>
+    </div>
+  </div>
+
+  <div class="slide">
+    <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=1400&q=60" alt="Cappuccino">
+    <div class="slide-content">
+      <h2>Best Seller: Cappuccino</h2>
+      <p>Rich espresso with creamy foam.</p>
+      <button class="btn btn-primary">Order Now</button>
+    </div>
+  </div>
+
+</section>
+
+
+            <!-- CATEGORIES -->
+            <header class="section-head">
+              <h3>Choose Category</h3>
+              <button class="link-btn" type="button" data-action="see-all-categories">
+                See All →
+              </button>
+            </header>
+
+            <div class="categories" role="tablist" aria-label="Coffee categories">
+              <button class="cat active" type="button" role="tab" aria-selected="true" data-category="hot-coffee">
+                <span aria-hidden="true">☕</span><small>Hot Coffee</small>
+              </button>
+              <button class="cat" type="button" role="tab" aria-selected="false" data-category="iced-coffee">
+                <span aria-hidden="true">🧊</span><small>Iced Coffee</small>
+              </button>
+              <button class="cat" type="button" role="tab" aria-selected="false" data-category="espresso">
+                <span aria-hidden="true">⚡</span><small>Espresso</small>
+              </button>
+              <button class="cat" type="button" role="tab" aria-selected="false" data-category="frappe">
+                <span aria-hidden="true">🥤</span><small>Frappe</small>
+              </button>
+              <button class="cat" type="button" role="tab" aria-selected="false" data-category="tea">
+                <span aria-hidden="true">🍵</span><small>Tea</small>
+              </button>
+              <button class="cat" type="button" role="tab" aria-selected="false" data-category="pastries">
+                <span aria-hidden="true">🥐</span><small>Pastries</small>
+              </button>
+              <button class="cat" type="button" role="tab" aria-selected="false" data-category="beans">
+                <span aria-hidden="true">🫘</span><small>Beans</small>
+              </button>
+            </div>
+
+            <!-- MENU -->
+            <header class="section-head">
+              <h3>Special Menu <span class="muted">All Items</span></h3>
+            </header>
+
+            <section class="grid" aria-label="Menu items" data-menu-grid>
+              <!-- HOT COFFEE -->
+<article class="card" data-item data-id="1" data-category="hot-coffee" data-name="Caramel Latte" data-price="3.95">
+  <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1000&q=60" alt="Caramel Latte">
+  <div class="card-body">
+    <h4>Caramel Latte</h4>
+    <p>Espresso with steamed milk & caramel...</p>
+    <div class="card-foot">
+      <strong class="price" data-price-text>₱3.95</strong>
+      <button class="pill" type="button" data-action="add-to-cart">Add</button>
+    </div>
+  </div>
+</article>
+
+<article class="card" data-item data-id="2" data-category="hot-coffee" data-name="Americano" data-price="3.10">
+  <img src="https://imgs.search.brave.com/7HpkWFQwveMgVYlR7TitVnyMOdVJYVQoo_sWnmmVW2o/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/bXlzdGljbW9ua2Nv/ZmZlZS5jb20vY2Ru/L3Nob3AvYXJ0aWNs/ZXMvYW1lcmljYW5v/X2NvZmZlZS5wbmc_/dj0xNzQ5OTQxMzE1/JndpZHRoPTEwMjQ" alt="Americano">
+  <div class="card-body">
+    <h4>Americano</h4>
+    <p>Bold espresso over ice, refreshing...</p>
+    <div class="card-foot">
+      <strong class="price" data-price-text>₱3.10</strong>
+      <button class="pill" type="button" data-action="add-to-cart">Add</button>
+    </div>
+  </div>
+</article>
+
+<article class="card" data-item data-id="3" data-category="hot-coffee" data-name="Cappuccino" data-price="3.50">
+  <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=1000&q=60" alt="Cappuccino">
+  <div class="card-body">
+    <h4>Cappuccino</h4>
+    <p>Classic espresso with creamy foam...</p>
+    <div class="card-foot">
+      <strong class="price" data-price-text>₱3.50</strong>
+      <button class="pill" type="button" data-action="add-to-cart">Add</button>
+    </div>
+  </div>
+</article>
+
+<article class="card" data-item data-id="4" data-category="hot-coffee" data-name="Mocha Frappe" data-price="4.25">
+  <img src="https://images.unsplash.com/photo-1577968897966-3d4325b36b61?auto=format&fit=crop&w=1000&q=60" alt="Mocha Frappe">
+  <div class="card-body">
+    <h4>Mocha Frappe</h4>
+    <p>Blended coffee with chocolate & ice...</p>
+    <div class="card-foot">
+      <strong class="price" data-price-text>₱4.25</strong>
+      <button class="pill" type="button" data-action="add-to-cart">Add</button>
+    </div>
+  </div>
+</article>
+
+<article class="card" data-item data-id="5" data-category="hot-coffee" data-name="Matcha Latte" data-price="3.85">
+  <img src="https://images.unsplash.com/photo-1515823662972-da6a2e4d3002?auto=format&fit=crop&w=1000&q=60" alt="Matcha Latte">
+  <div class="card-body">
+    <h4>Matcha Latte</h4>
+    <p>Smooth matcha with milk, lightly sweet...</p>
+    <div class="card-foot">
+      <strong class="price" data-price-text>₱3.85</strong>
+      <button class="pill" type="button" data-action="add-to-cart">Add</button>
+    </div>
+  </div>
+</article>
+
+<article class="card" data-item data-id="6" data-category="hot-coffee" data-name="Golden Turmeric Latte" data-price="2.40">
+  <img src="https://imgs.search.brave.com/4upbFXKY8QJrQ6EAxYcFlrY9v0zeGl_odKaBD7bejsc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTMw/MDkwMDc3Ny9waG90/by9nb2xkZW4tbWls/ay10dXJtZXJpYy1s/YXR0ZS1nb2xkZW4t/bGF0dGUuanBnP3M9/NjEyeDYxMiZ3PTAm/az0yMCZjPXJ3TGpK/YllPeUZ1TGNzSkU3/YmNBd3N2Zkg3RG1S/c2ROSkdnbjFfU1NV/dmc9" alt="Golden Turmeric Latte">
+  <div class="card-body">
+    <h4>Golden Turmeric Latte</h4>
+    <p>A golden sip of calm, brewed with intention...</p>
+    <div class="card-foot">
+      <strong class="price" data-price-text>₱2.40</strong>
+      <button class="pill" type="button" data-action="add-to-cart">Add</button>
+    </div>
+  </div>
+</article>
+
+<article class="card" data-item data-id="7" data-category="hot-coffee" data-name="House Blend Beans (250g)" data-price="8.99">
+  <img src="https://images.unsplash.com/photo-1507133750040-4a8f57021571?auto=format&fit=crop&w=1000&q=60" alt="Coffee Beans">
+  <div class="card-body">
+    <h4>House Blend Beans (250g)</h4>
+    <p>Fresh roasted beans, balanced & smooth...</p>
+    <div class="card-foot">
+      <strong class="price" data-price-text>₱8.99</strong>
+      <button class="pill" type="button" data-action="add-to-cart">Add</button>
+    </div>
+  </div>
+</article>
+
+
+   <!-- ICED COFFEE -->
+<article class="card" data-item data-id="8" data-category="iced-coffee" data-name="Iced Latte" data-price="3.80">
+  <img src="https://images.unsplash.com/photo-1521305916504-4a1121188589?auto=format&fit=crop&w=1000&q=60" alt="Iced Latte">
+  <div class="card-body">
+    <h4>Iced Latte</h4>
+    <p>Chilled espresso with milk and ice.</p>
+    <div class="card-foot">
+      <strong class="price" data-price-text>₱3.80</strong>
+      <button class="pill" type="button" data-action="add-to-cart">Add</button>
+    </div>
+  </div>
+</article>
+
+<article class="card" data-item data-id="9" data-category="iced-coffee" data-name="Vanilla Cold Brew" data-price="3.95">
+  <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=1000&q=60" alt="Cold Brew">
+  <div class="card-body">
+    <h4>Vanilla Cold Brew</h4>
+    <p>Smooth cold brew with vanilla syrup.</p>
+    <div class="card-foot">
+      <strong class="price" data-price-text>₱3.95</strong>
+      <button class="pill" type="button" data-action="add-to-cart">Add</button>
+    </div>
+  </div>
+</article>
+
+<!-- ESPRESSO -->
+<article class="card" data-item data-id="10" data-category="espresso" data-name="Single Espresso" data-price="2.20">
+  <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=1000&q=60" alt="Espresso Shot">
+  <div class="card-body">
+    <h4>Single Espresso</h4>
+    <p>Rich and bold espresso shot.</p>
+    <div class="card-foot">
+      <strong class="price" data-price-text>₱2.20</strong>
+      <button class="pill" type="button" data-action="add-to-cart">Add</button>
+    </div>
+  </div>
+</article>
+
+<article class="card" data-item data-id="11" data-category="espresso" data-name="Double Espresso" data-price="2.95">
+  <img src="https://images.unsplash.com/photo-1521305916504-4a1121188589?auto=format&fit=crop&w=1000&q=60" alt="Double Espresso">
+  <div class="card-body">
+    <h4>Double Espresso</h4>
+    <p>Extra strong double espresso shot.</p>
+    <div class="card-foot">
+      <strong class="price" data-price-text>₱2.95</strong>
+      <button class="pill" type="button" data-action="add-to-cart">Add</button>
+    </div>
+  </div>
+</article>
+
+<!-- FRAPPE -->
+<article class="card" data-item data-id="12" data-category="frappe" data-name="Mocha Frappe" data-price="4.25">
+  <img src="https://images.unsplash.com/photo-1577968897966-3d4325b36b61?auto=format&fit=crop&w=1000&q=60" alt="Mocha Frappe">
+  <div class="card-body">
+    <h4>Mocha Frappe</h4>
+    <p>Blended coffee with chocolate.</p>
+    <div class="card-foot">
+      <strong class="price" data-price-text>₱4.25</strong>
+      <button class="pill" type="button" data-action="add-to-cart">Add</button>
+    </div>
+  </div>
+</article>
+
+<article class="card" data-item data-id="13" data-category="frappe" data-name="Caramel Frappe" data-price="4.35">
+  <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1000&q=60" alt="Caramel Frappe">
+  <div class="card-body">
+    <h4>Caramel Frappe</h4>
+    <p>Sweet caramel blended iced coffee.</p>
+    <div class="card-foot">
+      <strong class="price" data-price-text>₱4.35</strong>
+      <button class="pill" type="button" data-action="add-to-cart">Add</button>
+    </div>
+  </div>
+</article>
+
+<!-- TEA -->
+<article class="card" data-item data-id="14" data-category="tea" data-name="Matcha Latte" data-price="3.85">
+  <img src="https://images.unsplash.com/photo-1515823662972-da6a2e4d3002?auto=format&fit=crop&w=1000&q=60" alt="Matcha Latte">
+  <div class="card-body">
+    <h4>Matcha Latte</h4>
+    <p>Premium matcha with milk.</p>
+    <div class="card-foot">
+      <strong class="price" data-price-text>₱3.85</strong>
+      <button class="pill" type="button" data-action="add-to-cart">Add</button>
+    </div>
+  </div>
+</article>
+
+<article class="card" data-item data-id="15" data-category="tea" data-name="Classic Black Tea" data-price="2.50">
+  <img src="https://images.unsplash.com/photo-1558160074-4d7d8bdf4256?auto=format&fit=crop&w=1000&q=60" alt="Black Tea">
+  <div class="card-body">
+    <h4>Classic Black Tea</h4>
+    <p>Fresh brewed black tea.</p>
+    <div class="card-foot">
+      <strong class="price" data-price-text>₱2.50</strong>
+      <button class="pill" type="button" data-action="add-to-cart">Add</button>
+    </div>
+  </div>
+</article>
+
+<!-- PASTRIES -->
+<article class="card" data-item data-id="16" data-category="pastries" data-name="Butter Croissant" data-price="2.40">
+  <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=1000&q=60" alt="Butter Croissant">
+  <div class="card-body">
+    <h4>Butter Croissant</h4>
+    <p>Flaky buttery pastry.</p>
+    <div class="card-foot">
+      <strong class="price" data-price-text>₱2.40</strong>
+      <button class="pill" type="button" data-action="add-to-cart">Add</button>
+    </div>
+  </div>
+</article>
+
+<article class="card" data-item data-id="17" data-category="pastries" data-name="Chocolate Muffin" data-price="2.80">
+  <img src="https://images.unsplash.com/photo-1542826438-bd32f43d626f?auto=format&fit=crop&w=1000&q=60" alt="Chocolate Muffin">
+  <div class="card-body">
+    <h4>Chocolate Muffin</h4>
+    <p>Soft muffin with chocolate chips.</p>
+    <div class="card-foot">
+      <strong class="price" data-price-text>₱2.80</strong>
+      <button class="pill" type="button" data-action="add-to-cart">Add</button>
+    </div>
+  </div>
+</article>
+
+<!-- BEANS -->
+<article class="card" data-item data-id="18" data-category="beans" data-name="Darkfruit Blend" data-price="8.99">
+  <img src="triad-darkfruit.jpg" alt="Darkfruit Blend">
+  <div class="card-body">
+    <h4>Darkfruit Blend</h4>
+    <p>Notes of cocoa, caramel and cherry.</p>
+    <div class="card-foot">
+      <strong class="price" data-price-text>₱8.99</strong>
+      <button class="pill" type="button" data-action="add-to-cart">Add</button>
+    </div>
+  </div>
+</article>
+
+<article class="card" data-item data-id="19" data-category="beans" data-name="Mono Blend" data-price="9.50">
+  <img src="triad-mono.jpg" alt="Mono Blend">
+  <div class="card-body">
+    <h4>Mono Blend</h4>
+    <p>Dark cocoa, brown spice, roasted almonds.</p>
+    <div class="card-foot">
+      <strong class="price" data-price-text>₱9.50</strong>
+      <button class="pill" type="button" data-action="add-to-cart">Add</button>
+    </div>
+  </div>
+</article>
+
+<article class="card" data-item data-id="20" data-category="beans" data-name="Espresso Beans" data-price="10.99">
+  <img src="triad-espresso.jpg" alt="Espresso Beans">
+  <div class="card-body">
+    <h4>Espresso Beans</h4>
+    <p>Special roast for strong espresso flavor.</p>
+    <div class="card-foot">
+      <strong class="price" data-price-text>₱10.99</strong>
+      <button class="pill" type="button" data-action="add-to-cart">Add</button>
+    </div>
+  </div>
+</article>
+         
+            </section>
+          </section>
+        </div>
+      </main>
+
+      <!-- RIGHT PANEL -->
+      <aside class="right" aria-label="Order Panel">
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Customer Information</h3>
+            <button class="icon-btn" type="button" aria-label="Info" data-action="customer-info">ⓘ</button>
+          </div>
+
+          <div class="field">
+            <label for="custName">Customer Name:</label>
+            <input id="custName" class="input" type="text" value="Judith Rodriguez" data-customer-name />
+          </div>
+
+          <div class="field two-col">
+            <div>
+              <label for="tableCount">Number of Person:</label>
+              <input id="tableCount" class="input" type="text" value="24 Person Table" data-table-text />
+            </div>
+
+            <div class="qty" aria-label="Quantity controls">
+              <button class="qty-btn" type="button" data-action="decrease-person">−</button>
+              <span class="qty-num" data-person-count>24</span>
+              <button class="qty-btn" type="button" data-action="increase-person">+</button>
+            </div>
+          </div>
+
+          <h3 class="mt">Current Order</h3>
+
+          <div class="order-list" data-cart>
+            <div class="order-item" data-cart-item data-id="latte">
+              <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=240&q=60" alt="Caramel Latte">
+              <div class="order-info">
+                <div class="order-name">Caramel Latte</div>
+                <div class="order-price">₱3.95</div>
+              </div>
+              <div class="order-actions">
+                <button class="round" type="button" data-action="decrease-item" aria-label="Decrease">−</button>
+                <span class="badge" data-qty>1</span>
+                <button class="round" type="button" data-action="increase-item" aria-label="Increase">+</button>
+                <button class="mini-link" type="button" data-action="remove-item">Remove</button>
+              </div>
+            </div>
+
+            <div class="order-item" data-cart-item data-id="coldbrew">
+              <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=240&q=60" alt="Cold Brew">
+              <div class="order-info">
+                <div class="order-name">Cold Brew</div>
+                <div class="order-price">₱3.75</div>
+              </div>
+              <div class="order-actions">
+                <button class="round" type="button" data-action="decrease-item" aria-label="Decrease">−</button>
+                <span class="badge" data-qty>1</span>
+                <button class="round" type="button" data-action="increase-item" aria-label="Increase">+</button>
+                <button class="mini-link" type="button" data-action="remove-item">Remove</button>
+              </div>
+            </div>
+
+            <div class="order-item" data-cart-item data-id="croissant">
+              <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=240&q=60" alt="Butter Croissant">
+              <div class="order-info">
+                <div class="order-name">Butter Croissant</div>
+                <div class="order-price">₱2.40</div>
+              </div>
+              <div class="order-actions">
+                <button class="round" type="button" data-action="decrease-item" aria-label="Decrease">−</button>
+                <span class="badge" data-qty>1</span>
+                <button class="round" type="button" data-action="increase-item" aria-label="Increase">+</button>
+                <button class="mini-link" type="button" data-action="remove-item">Remove</button>
+              </div>
+            </div>
+
+            <div class="order-item" data-cart-item data-id="beans">
+              <img src="https://images.unsplash.com/photo-1507133750040-4a8f57021571?auto=format&fit=crop&w=240&q=60" alt="House Blend Beans">
+              <div class="order-info">
+                <div class="order-name">House Blend Beans</div>
+                <div class="order-price">₱8.99</div>
+              </div>
+              <div class="order-actions">
+                <button class="round" type="button" data-action="decrease-item" aria-label="Decrease">−</button>
+                <span class="badge" data-qty>1</span>
+                <button class="round" type="button" data-action="increase-item" aria-label="Increase">+</button>
+                <button class="mini-link" type="button" data-action="remove-item">Remove</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="totals" aria-label="Totals">
+            <div class="line"><span>Sub Total</span><strong data-subtotal>₱19.09</strong></div>
+            <div class="line"><span>Tax 10% (VAT Included)</span><strong data-tax>₱1.91</strong></div>
+            <div class="line"><span>Discount 10%</span><strong class="neg" data-discount>-₱1.91</strong></div>
+            <div class="line total"><span>Total</span><strong class="green" data-total>₱19.09</strong></div>
+          </div>
+
+          <h3 class="mt">Payment Method</h3>
+          <div class="pay" role="radiogroup" aria-label="Payment method">
+            <button class="pay-btn" type="button" role="radio" aria-checked="false" data-payment="cash">Cash</button>
+            <button class="pay-btn active" type="button" role="radio" aria-checked="true" data-payment="ewallet">E-Wallet</button>
+          </div>
+
+          <button class="btn btn-primary full" type="button" data-action="continue-payment">
+            Continue to Payment
+          </button>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+  <script src="assets/js/app.js" defer></script>
+ <script src="assets/js/app.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  let currentSlide = 0;
+  const slides = document.querySelectorAll(".hero-slider .slide");
+
+  if (!slides.length) return; // stops if slides are not found
+
+  function showSlide(index) {
+    slides.forEach(s => s.classList.remove("active"));
+    slides[index].classList.add("active");
+  }
+
+  setInterval(() => {
+    currentSlide = (currentSlide + 1) % slides.length;
+    showSlide(currentSlide);
+  }, 5000); // 5 seconds
+});
+</script>
+
+
+</body>
+</html>

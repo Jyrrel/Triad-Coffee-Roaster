@@ -1,0 +1,1 @@
+Put your image files here (logo.jpg, homepage.png, blend.jpg, Espresso.jpg, MT APO.jpg, PCQC.jpg, etc.).
